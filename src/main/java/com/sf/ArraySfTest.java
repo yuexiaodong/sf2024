@@ -20,6 +20,7 @@ public class ArraySfTest {
             if (area > max) {
                 max = area;
             }
+            // 从小的一方移动，只有减少小的才可能获取更大的面积
             if (heights[left]  < heights[right]) {
                 left ++;
             } else {
