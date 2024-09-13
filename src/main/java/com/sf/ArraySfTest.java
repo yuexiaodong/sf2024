@@ -1,12 +1,119 @@
 package com.sf;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ArraySfTest {
 
     public static void main(String[] args) {
 
+    }
+
+
+    // lc217: 存在重复元素至少2次
+    public boolean containsDuplicate(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                return true;
+            }
+            map.put(nums[i], i);
+        }
+        return false;
+    }
+
+    // LC219:数组中重复元素满足特定的下标差值
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        // 暴力解法
+//        for (int i = 0; i < nums.length; i++) {
+//            for (int j = 0; j < nums.length; j++) {
+//                if (Math.abs(i - j) > k) {
+//                    continue;
+//                }
+//                if (i != j && nums[i] == nums[j]) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+
+        // 哈希表存储
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i]) && i - map.get(nums[i]) <= k) {
+                return true;
+            }
+            map.put(nums[i], i);
+        }
+        return false;
+    }
+
+    // lc219 滑动窗口+set
+    public boolean containsNearbyDuplicateBySlideWin(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>(); // 存储滑动窗口内的数据
+        for (int i = 0; i < nums.length; i++) {
+            if (i > k) {
+                set.remove(nums[i - k -1]);
+            }
+            if (!set.add(nums[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // lc220:
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+        //
+        return false;
+    }
+
+    // lc128：最长连续数列
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> numSets = new HashSet<>();
+        for (int num : nums) {
+            numSets.add(num);
+        }
+        int ans = 0;
+        for (int num : numSets) {
+            if (!numSets.contains(num - 1)) { // 舍弃一些无用的判断
+                int currNum = num;
+                int currLen = 1;
+                while (numSets.contains(currNum + 1)) {
+                    currNum += 1;
+                    currLen += 1;
+                }
+                ans = Math.max(ans, currLen);
+            }
+        }
+        return  ans;
+    }
+
+
+
+    public boolean isValidSudoku(char[][] board) {
+        int[][] rows = new int[9][9];
+        int[][] cols = new int[9][9];
+        int[][][] small = new int[3][3][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char c = board[i][j];
+                if (c == '.') {
+                    continue;
+                }
+                int index = c -'0' - 1;
+                rows[i][index] ++;
+                cols[j][index] ++;
+                small[i/3][j/3][index] ++;
+                if (rows[i][index] > 1 || cols[j][index] > 1
+                        || small[i/3][j/3][index] > 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // lc11:盛最多水的容器

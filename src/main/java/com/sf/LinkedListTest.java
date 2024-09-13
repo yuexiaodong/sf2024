@@ -6,6 +6,24 @@ import java.util.Set;
 
 public class LinkedListTest {
 
+    // lc19：删除倒数第N个节点
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(-1, head);
+        ListNode first = head;
+        ListNode second = dummy;
+        for (int i = 0; i < n; i++) {
+            first = first.next;
+        }
+        while(first != null) {
+            first = first.next;
+            second = second.next;
+        }
+        // first == null
+        second.next = second.next.next;
+        return dummy.next;
+    }
+
+
     // lc92: 链表反转
     // 给你单链表的头指针 head 和两个整数 left 和 right ，其中 left <= right 。
     // 请你反转从位置 left 到位置 right 的链表节点，返回 反转后的链表 。
